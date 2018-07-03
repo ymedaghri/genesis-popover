@@ -1,0 +1,109 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="genesis-popover">
+
+  <template>
+
+    <style>
+      /* shadow DOM styles go here */
+      :host {
+        display: inline-block;
+      }
+
+      .tooltip{
+        position: relative;
+    }
+
+.tooltip::before, .tooltip::after{
+    position: absolute;
+    left: 50%;
+    transition: all ease 0.3s;
+}
+
+.tooltip::before{
+    display: none;
+    content: "";
+    border-width: 14px 8px 0 8px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.6) transparent transparent transparent;
+    bottom: -20px;
+    transform: rotate(180deg);
+    margin-left: -8px;
+}
+
+.tooltip::after{
+    display: none;
+    content: 'Here is some content, unfortunately this approach accept only text';
+    background: rgba(0,0,0,0.6);
+    bottom: -20px;
+    transform: translateY(100%);
+    font-size: 14px;
+    margin-left: -150px;
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+    color: #eee;
+    padding: 14px;
+}
+
+
+
+      .hidden-content::after, .hidden-content::before {
+        display: none;
+      }
+
+      .visible-content::after, .visible-content::before {
+        display:block;
+        opacity: 1;
+      }
+
+    </style>
+
+    <!-- shadow DOM goes here -->
+
+      this is how we make a popover <span on-click="toggle" class$="[[contentClass]] data-tooltip="Passwords must contain 3 A's, a 7 and at least 2 question marks">
+      <input type="button" value="Pop" />
+      </span>
+
+  </template>
+
+  <script>
+    class GenesisPopover extends Polymer.Element {
+      static get is() {
+        return 'genesis-popover';
+      }
+      static get properties() {
+        return {
+          contentClass : {
+            type: String,
+            value: 'tooltip'
+          },
+          pressed: {
+            type: Boolean,
+            notify: true,
+            reflectToAttribute: true,
+            value: false
+          },
+          toggleIcon: {
+            type: String
+          }
+        }
+      }
+      constructor() {
+        super();
+      }
+      toggle() {
+        this.pressed = !this.pressed;
+        if (this.pressed) {
+          this.contentClass='tooltip visible-content';
+        } else {
+          this.contentClass='tooltip hidden-content';
+        }
+      }
+
+    }
+    customElements.define(GenesisPopover.is, GenesisPopover);
+  </script>
+
+</dom-module>
