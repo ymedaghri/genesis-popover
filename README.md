@@ -1,8 +1,8 @@
-﻿# Your first Polymer element
+﻿# Polymer CSS Popover WebComponent
 
-This repo goes with the [Build your first Polymer element tutorial](https://www.polymer-project.org/2.0/start/first-element/intro).
+This project is a polymer component project for the component <genesis-popover/>.
 
-## Running the tutorial code
+## Content
 
 You'll need to install some command-line tools to manage dependencies and to run the demo.
 
@@ -14,16 +14,16 @@ You'll need to install some command-line tools to manage dependencies and to run
 
 3.  Clone this repo:
 
-        https://github.com/PolymerLabs/polymer-2-first-element.git
+        https://github.com/ymedaghri/genesis-popover.git
         
 4.  Change directory to your local repo and install dependencies with `bower`:
 
-        cd polymer-2-first-element
+        cd genesis-popover
         bower install
         
 5.  To preview your element, run the Polymer development server from the repo directory:
 
-        polymer serve
+        polymer serve < --open >
         
-    Open `localhost:8080/components/icon-toggle/demo/` in your browser. (Note that the path uses `icon-toggle`—the 
+    Open `localhost:8080/components/genesis-popover/demo/` in your browser. (Note that the path uses `genesis-popover`—the 
     component name listed in this element's `bower.json` file—rather than the actual directory name.) 
