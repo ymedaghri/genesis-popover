@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="popperjs-import.html">
 
 <dom-module id="genesis-popover">
 
@@ -58,13 +59,46 @@
         opacity: 1;
       }
 
+      .popper-hidden {
+        display: none;
+      }
+
+      .popper-visible {
+        display: block;
+        position: relative;
+        background: rgba(0,0,0,0.3);
+        padding: 5px 12px;
+        border-radius: 10px;
+        font-size: 20px;
+        margin-top: 15px;
+      }
+
+      .popper-visible::before {
+        position: absolute;
+        left: 50%;
+        transition: all ease 0.3s;
+        content: "";
+        border-width: 14px 8px 0 8px;
+        border-style: solid;
+        border-color: rgba(0,0,0,0.3) transparent transparent transparent;
+        top: -14px;
+        transform: rotate(180deg);
+        margin-left: -8px;
+      }
     </style>
 
     <!-- shadow DOM goes here -->
 
+
       this is how we make a popover <span on-click="toggle" class$="[[contentClass]] data-tooltip="Passwords must contain 3 A's, a 7 and at least 2 question marks">
       <input type="button" value="Pop" />
       </span>
+
+      <h2>PopperJs Example</h2>
+      bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+       <input id="mybutton" type="button" value="Pop with popper" on-click="popper"/>
+
+      <div id="mypopper" class$="[[popperClass]]"> the popper to move is here</div>
 
   </template>
 
@@ -78,6 +112,10 @@
           contentClass : {
             type: String,
             value: 'tooltip'
+          },
+          popperClass : {
+            type: String,
+            value: 'popper-hidden'
           },
           pressed: {
             type: Boolean,
@@ -99,6 +137,26 @@
           this.contentClass='tooltip visible-content';
         } else {
           this.contentClass='tooltip hidden-content';
+        }
+      }
+
+      popper() {
+
+        this.pressed = !this.pressed;
+
+        if (this.pressed) {
+            this.popperClass='popper-visible';
+            var popper = this.$.mypopper;
+            var reference = this.$.mybutton;
+            var anotherPopper = new Popper(
+                reference,
+                popper,
+                {
+                    // popper options here
+                }
+            );
+        } else {
+          this.popperClass='popper-hidden';
         }
       }
 
