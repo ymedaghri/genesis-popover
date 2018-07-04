@@ -90,15 +90,13 @@
     <!-- shadow DOM goes here -->
 
 
-      this is how we make a popover <span on-click="toggle" class$="[[contentClass]] data-tooltip="Passwords must contain 3 A's, a 7 and at least 2 question marks">
-      <input type="button" value="Pop" />
-      </span>
+       <span id="mySpan" on-click="popper">
+         <slot></slot>
+       </span>
 
-      <h2>PopperJs Example</h2>
-      bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-       <input id="mybutton" type="button" value="Pop with popper" on-click="popper"/>
-
-      <div id="mypopper" class$="[[popperClass]]"> the popper to move is here</div>
+      <div id="mypopper" class$="[[popperClass]]">
+        <slot name="content">Default popover content</slot>
+      </div>
 
   </template>
 
@@ -147,7 +145,7 @@
         if (this.pressed) {
             this.popperClass='popper-visible';
             var popper = this.$.mypopper;
-            var reference = this.$.mybutton;
+            var reference = this.$.mySpan;
             var anotherPopper = new Popper(
                 reference,
                 popper,

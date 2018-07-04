@@ -10,9 +10,31 @@
       }
     </style>
 
-    <h3>Statically-configured genesis popovers</h3>
+    <h2>PopperJs Example</h2>
 
-    <genesis-popover></genesis-popover>
+
+      bla bla bla bla bla bla bla bla bla bla bla bla
+       <genesis-popover>
+         <input type="button" value="Pop with popper"/>
+         <div slot="content">Le contenu de mon slot est ici</div>
+       </genesis-popover>
+
+<br/><br/><br/><br/>
+      Another popover with default content
+      <genesis-popover>
+         <input type="button" value="Pop another one"/>
+       </genesis-popover>
+
+<br/><br/><br/><br/>
+      Another popover with html content
+      <genesis-popover>
+         <input type="button" value="Pop another one"/>
+
+         <div slot="content"><table style="solid 1px black"><tr><td>Contenu dans un td pas tres joli</td></tr></table></div>
+       </genesis-popover>
+
+
+
 
   </template>
 
