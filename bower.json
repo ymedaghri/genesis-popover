@@ -13,7 +13,8 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "vaadin-lumo-styles": "^1.0.0"
   },
   "devDependencies": {
     "iron-icon": "PolymerElements/iron-icon#^2.0.0",
