@@ -1,8 +1,6 @@
-# Your first Polymer element
+﻿# Your first Polymer element
 
 This repo goes with the [Build your first Polymer element tutorial](https://www.polymer-project.org/2.0/start/first-element/intro).
-
-
 
 ## Running the tutorial code
 
