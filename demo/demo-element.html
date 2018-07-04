@@ -11,12 +11,15 @@
         font-family: sans-serif;
       }
 
+      .wider {
+        --genesis-popover-max-width:500px;
+      }
       vaadin-grid {
         width: 500px;
       }
     </style>
 
-    <h2>PopperJs Example</h2>
+    <h2>Genesis-Popover Example</h2>
 
       This first example consists in a button toggling a simple popover when clicked
        <genesis-popover>
@@ -32,8 +35,8 @@
        </genesis-popover>
 
 	<hr/>
-      Another popover with html content
-      <genesis-popover>
+      Another popover with a vaadin grid as html content
+      <genesis-popover class="wider">
          <input type="button" value="Pop another one"/>
          <div slot="content">
            <dom-bind>
