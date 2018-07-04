@@ -10,8 +10,6 @@
     <style>
       /* shadow DOM styles go here */
 
-
-
       .popper {
         background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
         border-radius: var(--lumo-border-radius);
@@ -35,9 +33,9 @@
         /* padding: 15px 22px; */
         /* border-radius: 10px; */
         /* font-size: 20px; */
-        margin-top: 20px;
+        margin-top: var(--genesis-popover-top-margin, 20px);
         max-width: var(--genesis-popover-max-width, 300px);
-        z-index: 10;
+        z-index: 10000;
       }
 
       .popper-visible {
@@ -117,7 +115,11 @@
                 popperEmitter,
                 popperContent,
                 {
-                    // popper options here
+                  modifiers: {
+                      preventOverflow: {
+                          boundariesElement: container,
+                      },
+                  },
                 }
             );
         } else {
