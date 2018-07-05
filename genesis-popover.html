@@ -16,13 +16,13 @@
         --genesis-popover-z-index:10000;
       }
 
-      /* :host #popoverContent {
+      /*:host #popoverContent {
         display: none;
       }
 
-      :host([pressed]) #popoverContent {
+      :host #popoverContent {
         display: flex;
-      } */
+      }*/
 
 
 
@@ -73,11 +73,11 @@
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="popper">
+       <span id="popoverEmitter" on-click="togglePopper">
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]" on-click="popper">
+      <div id="popoverContent" class$="[[popperClass]]">
         <slot name="content"></slot>
       </div>
 
@@ -90,58 +90,82 @@
       }
       static get properties() {
         return {
-          popperClass : {
-            type: String,
-            value: 'popper popper-hidden'
-          },
-          popperClass2 : {
-            type: String,
-            computed: 'computeClass()'
-          },
           pressed: {
             type: Boolean,
-            notify: true,
             reflectToAttribute: true,
-            value: false
+            value: false,
+            observer: '_pressedChanged'
           },
           placement: {
             type: String,
             value: 'bottom',
             reflectToAttribute: true
+          },
+          popperClass: {
+            type: String,
+            value: 'popper popper-hidden'
           }
         }
       }
+
       constructor() {
         super();
       }
 
-      computeClass(){
-
+      ready(){
+        super.ready();
+        this.popperInstance = new Popper(
+                this.$.popoverEmitter,
+                this.$.popoverContent,
+                {
+                  placement: this.placement,
+                  modifiers: {
+                    preventOverflow: {
+                      boundariesElement: 'viewport',
+                    },
+                  },
+                }
+            );
+        if(this.pressed) {
+          this.showPopper();
+        }
       }
 
-      connectedCallback() {
-      super.connectedCallback();
-      this.popperInstance = new Popper(
-          this.$.popoverEmitter,
-          this.$.popoverContent,
-          {
-            placement: this.placement,
-            modifiers: {
-              preventOverflow: {
-                boundariesElement: 'viewport',
-              },
-            },
-          }
-      );
-    }
+    _pressedChanged(newValue, oldValue) {
+        if(newValue && this.popperInstance!=null) {
+          this.showPopper();
+        } else {
+          this.popperClass="popper popper-hidden";
+        }
+      }
+    //   connectedCallback() {
+    //   super.connectedCallback();
 
-      popper() {
+
+    // }
+
+
+
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //   super.attributeChangedCallback(name, oldValue, newValue);
+    //     if(name==='pressed' && this.popperInstance!=null && this.pressed)
+    //     {
+    //       // this.showPopper();
+    //     }
+    //   }
+
+      togglePopper() {
         this.pressed = !this.pressed;
-        if (this.pressed) {
-          this.popperInstance.scheduleUpdate();
-          this.popperClass='popper popper-visible';
+      }
 
-          var that=this;
+      showPopper(){
+        this.popperInstance.scheduleUpdate();
+        this.popperClass="popper popper-visible";
+        this.registerListeners();
+      }
+
+      registerListeners(){
+        var that=this;
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
@@ -153,7 +177,7 @@
                  || event.clientY<emitterRect.top
                  || event.clientY>emitterRect.bottom)
                  {
-                   that.popper();
+                   that.togglePopper();
                  }
               }
 
@@ -162,13 +186,9 @@
               if(event.key==='Escape') {
                 document.removeEventListener("keydown", windowKeyDown, true);
                 document.removeEventListener("click", windowClick, true);
-                that.popper();
+                that.togglePopper();
               }
           }
-
-        } else {
-          this.popperClass='popper popper-hidden';
-        }
       }
 
     }
