@@ -25,6 +25,7 @@
         -moz-osx-font-smoothing: grayscale;
 
         padding: var(--lumo-space-wide-l);
+
         align-items: center;
         justify-content: space-between;
 
@@ -33,35 +34,21 @@
         /* padding: 15px 22px; */
         /* border-radius: 10px; */
         /* font-size: 20px; */
-        margin-top: var(--genesis-popover-top-margin, 20px);
+
         max-width: var(--genesis-popover-max-width, 300px);
         z-index: 10000;
       }
 
+      .popper[x-placement^="bottom"] {
+          margin-top: var(--genesis-popover-top-margin, 20px);
+      }
+
       .popper-visible {
         display: flex;
-        /* visibility: visible;
-        opacity: 1;
-        transition: opacity 1s linear; */
       }
 
       .popper-hidden {
         display: none;
-        /* visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s 1s, opacity 1s linear; */
-      }
-
-      .popper::before {
-        /* position: absolute;
-        left: 50%;
-        content: "";
-        border-width: 14px 8px 0 8px;
-        border-style: solid;
-        border-color: rgba(200,200,200,1) transparent transparent transparent;
-        top: -14px;
-        transform: rotate(180deg);
-        margin-left: -8px; */
       }
 
     </style>
@@ -100,28 +87,34 @@
       }
       constructor() {
         super();
+
+
       }
+      connectedCallback() {
+      super.connectedCallback();
+      this.popperInstance = new Popper(
+          this.$.popoverEmitter,
+          this.$.popoverContent,
+          {
+            placement: 'bottom',
+            modifiers: {
+              preventOverflow: {
+                boundariesElement: 'viewport',
+                escapeWithReference: false,
+              },
+            },
+          }
+      );
+    }
 
 
       popper() {
 
         this.pressed = !this.pressed;
-
         if (this.pressed) {
-            this.popperClass='popper popper-visible';
-            var popperContent = this.$.popoverContent;
-            var popperEmitter = this.$.popoverEmitter;
-            var anotherPopper = new Popper(
-                popperEmitter,
-                popperContent,
-                {
-                  modifiers: {
-                      preventOverflow: {
-                          boundariesElement: 'window',
-                      },
-                  },
-                }
-            );
+          this.popperInstance.scheduleUpdate();
+          this.popperClass='popper popper-visible';
+
         } else {
           this.popperClass='popper popper-hidden';
         }

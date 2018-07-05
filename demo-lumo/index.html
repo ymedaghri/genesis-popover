@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script>
+      /*
+      window.Polymer = window.Polymer || {};
+      window.Polymer.dom = 'shadow';
+      */
+    </script>
+    <style>
+    html {
+
+        /* customized Vaadin Constants*/
+        --lumo-font-size: 12px;
+        --lumo-font-family: Arial, Helvetica, sans-serif;
+        --iron-icon-width: 12px;
+
+        /* Factset colors as constants */
+        --factset-gray2: #323232;
+        --factset-gray3: #4b4b4b;
+        --factset-gray8: #c8c8c8;
+        --factset-gray9: #e1e1e1;
+        --factset-gray10: #f0f0f0;
+        --factset-gray12: #3c3c3c;
+
+        --factset-blue6: #b1dbea;
+        --factset-blue1: #00aeef;
+
+        --factset-yellow6: #ff9;
+        --factset-yellow2: #fc0;
+
+        /* Warning */
+        --genesis-warning-color: hsl(47, 100%, 50%);
+        --genesis-background-new-line-color: rgb(175, 220, 230);
+        --genesis-background-warning-color: rgb(220, 200, 55);
+        --genesis-background-error-color: rgb(250, 220, 220);
+
+
+        /* Bridge between Vaadin Constants and Factset Thief css*/
+        --factset-nav-font-size: var(--lumo-font-size);
+        --factset-nav-group-heading-font-size: var(--lumo-font-size) -1;
+        --factset-nav-item-left-padding: 20px;
+
+    }
+    </style>
+    <link rel="import" href="demo-lumo-element.html">
+  </head>
+  <body>
+    <demo-lumo-element></demo-lumo-element>
+  </body>
+</html>

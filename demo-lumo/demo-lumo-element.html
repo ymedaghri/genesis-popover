@@ -1,0 +1,120 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-icons/iron-icons.html">
+<link rel="import" href="../genesis-popover.html">
+<link rel="import" href="../../vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../genesis-popover.html">
+<link rel="import" href="../../vaadin-icons/vaadin-icons.html">
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+
+<dom-module id="demo-lumo-element">
+  <template>
+    <style>
+      :host {
+        font-family: sans-serif;
+      }
+
+      .wider {
+        --genesis-popover-max-width:500px;
+      }
+
+      .main-layout {
+          /* min-height: 100vh; */
+          margin: 0;
+
+          display: flex;
+          flex-direction: column;
+      }
+
+      .toolbar {
+          box-sizing: content-box;
+          background-image: linear-gradient(to bottom, white 0%, var(--factset-gray10) 100%);
+          background-repeat: repeat-x;
+          background-color: #fff;
+
+          padding: 7px;
+          border: 1px solid var(--factset-gray8);
+          height: 20px
+      }
+
+
+      .toolbar-section {
+          height: 100%;
+      }
+
+      .toolbar-section-left {
+          float: left;
+      }
+
+      .toolbar-section-right {
+          float: right;
+      }
+
+      .toolbar-group {
+          display: inline-block;
+          float: left;
+          height: 100%;
+      }
+
+      .toolbar-group > label {
+          line-height: 20px;
+          vertical-align: top;
+      }
+
+      .toolbar-group > * {
+          float: left;
+          margin-right: 10px
+      }
+
+      .toolbar-group > *:last-child {
+          margin-right: 0
+      }
+
+      .toolbar-group::after {
+          display: inline-block;
+          font-size: 12px;
+          content: '';
+          border-left: 1px solid var(--factset-gray8);
+          height: 11px;
+          width: 1px;
+          margin: 0 10px 0 10px;
+          vertical-align: middle;
+      }
+
+      .toolbar-group:last-child::after {
+          display: none
+      }
+
+      /* ---------------------------------------------------------------------------------
+      *  Toolbar (Extension)
+      *  ----------------------
+      */
+      .toolbar-group vaadin-combo-box {
+          position: relative;
+          top: -6px;
+      }
+
+
+    </style>
+
+    <div class="main-layout">
+      <div class="main-layout__filter toolbar">
+        <div class="toolbar-section toolbar-section-right">
+          <div class="toolbar-group">
+            <genesis-popover>
+              <iron-icon icon="vaadin:hourglass"></iron-icon>
+            </genesis-popover>
+            <iron-icon class="disabled" icon="vaadin:refresh"></iron-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    class DemoElement extends Polymer.Element {
+      static get is() { return 'demo-lumo-element' }
+    }
+    customElements.define(DemoElement.is, DemoElement);
+    </script>
+</dom-module>
