@@ -77,7 +77,7 @@
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]">
+      <div id="popoverContent" class$="[[popperClass]]" on-click="togglePopper">
         <slot name="content"></slot>
       </div>
 
@@ -132,6 +132,7 @@
       }
 
     _pressedChanged(newValue, oldValue) {
+      console.log(oldValue, newValue);
         if(newValue && this.popperInstance!=null) {
           this.showPopper();
         } else {
@@ -161,11 +162,8 @@
       showPopper(){
         this.popperInstance.scheduleUpdate();
         this.popperClass="popper popper-visible";
-        this.registerListeners();
-      }
 
-      registerListeners(){
-        var that=this;
+          var that=this;
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
