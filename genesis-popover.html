@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="popperjs-import.html">
-<link rel="import" href="../vaadin-lumo-styles/vaadin-lumo-styles.html">
 
 <dom-module id="genesis-popover">
 
@@ -9,6 +8,23 @@
 
     <style>
       /* shadow DOM styles go here */
+
+      :host {
+        --genesis-popover-max-width:300px;
+        --genesis-popover-min-height:10px;
+        --genesis-popover-margin:15px;
+        --genesis-popover-z-index:10000;
+      }
+
+      /* :host #popoverContent {
+        display: none;
+      }
+
+      :host([pressed]) #popoverContent {
+        display: flex;
+      } */
+
+
 
       .popper {
         background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
@@ -25,22 +41,25 @@
         -moz-osx-font-smoothing: grayscale;
 
         padding: var(--lumo-space-wide-l);
-
-        align-items: center;
-        justify-content: space-between;
-
-        /* position: absolute; */
-        /* background: rgba(200,200,200,1); */
-        /* padding: 15px 22px; */
-        /* border-radius: 10px; */
-        /* font-size: 20px; */
-
-        max-width: var(--genesis-popover-max-width, 300px);
-        z-index: 10000;
+        max-width: var(--genesis-popover-max-width);
+        min-height: var(--genesis-popover-min-height);
+        z-index: var(--genesis-popover-z-index);
       }
 
       .popper[x-placement^="bottom"] {
-          margin-top: var(--genesis-popover-top-margin, 20px);
+          margin-top: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="top"] {
+          margin-bottom: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="right"] {
+          margin-left: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="left"] {
+          margin-right: var(--genesis-popover-margin);
       }
 
       .popper-visible {
@@ -54,14 +73,12 @@
     </style>
 
     <!-- shadow DOM goes here -->
-
-
        <span id="popoverEmitter" on-click="popper">
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]">
-        <slot name="content">Default popover content</slot>
+      <div id="popoverContent" class$="[[popperClass]]" on-click="popper">
+        <slot name="content"></slot>
       </div>
 
   </template>
@@ -76,6 +93,10 @@
           popperClass : {
             type: String,
             value: 'popper popper-hidden'
+          },
+          popperClass2 : {
+            type: String,
+            computed: 'computeClass()'
           },
           pressed: {
             type: Boolean,
@@ -92,6 +113,10 @@
       }
       constructor() {
         super();
+      }
+
+      computeClass(){
+
       }
 
       connectedCallback() {
@@ -115,6 +140,32 @@
         if (this.pressed) {
           this.popperInstance.scheduleUpdate();
           this.popperClass='popper popper-visible';
+
+          var that=this;
+
+          document.addEventListener("click", windowClick, true);
+          function windowClick(event) {
+              var emitterRect=that.$.popoverEmitter.getBoundingClientRect();
+              document.removeEventListener("click", windowClick, true);
+              document.removeEventListener("keydown", windowKeyDown, true);
+              if(event.clientX<emitterRect.left
+                 || event.clientX>emitterRect.right
+                 || event.clientY<emitterRect.top
+                 || event.clientY>emitterRect.bottom)
+                 {
+                   that.popper();
+                 }
+              }
+
+          document.addEventListener('keydown', windowKeyDown, true);
+          function windowKeyDown(event) {
+              if(event.key==='Escape') {
+                document.removeEventListener("keydown", windowKeyDown, true);
+                document.removeEventListener("click", windowClick, true);
+                that.popper();
+              }
+          }
+
         } else {
           this.popperClass='popper popper-hidden';
         }

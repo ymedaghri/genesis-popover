@@ -5,17 +5,11 @@
 <link rel="import" href="../genesis-popover.html">
 <link rel="import" href="../../vaadin-icons/vaadin-icons.html">
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
-<link rel="import" href="../../vaadin-lumo-styles/vaadin-lumo-styles.html">
 
 <dom-module id="demo-lumo-element">
   <template>
     <style>
       :host {
-        font-family: sans-serif;
-      }
-
-      .wider {
-        --genesis-popover-max-width:500px;
       }
 
       .main-layout {
@@ -28,12 +22,12 @@
 
       .toolbar {
           box-sizing: content-box;
-          background-image: linear-gradient(to bottom, white 0%, var(--factset-gray10) 100%);
+          background-image: linear-gradient(to bottom, white 0%, #f0f0f0 100%);
           background-repeat: repeat-x;
           background-color: #fff;
 
           padding: 7px;
-          border: 1px solid var(--factset-gray8);
+          border: 1px solid #c8c8c8;
           height: 20px
       }
 
@@ -74,7 +68,7 @@
           display: inline-block;
           font-size: 12px;
           content: '';
-          border-left: 1px solid var(--factset-gray8);
+          border-left: 1px solid #c8c8c8;
           height: 11px;
           width: 1px;
           margin: 0 10px 0 10px;
@@ -85,6 +79,9 @@
           display: none
       }
 
+      genesis-popover {
+        --genesis-popover-min-height:800px;
+      }
       /* ---------------------------------------------------------------------------------
       *  Toolbar (Extension)
       *  ----------------------
@@ -103,6 +100,10 @@
           <div class="toolbar-group">
             <genesis-popover>
               <iron-icon icon="vaadin:hourglass"></iron-icon>
+              <div slot="content" style="display:flex; flex-direction:column;justify-content:space-between;">
+                <div>This is a custom content</div>
+                <div>This is another part</div>
+              </div>
             </genesis-popover>
             <iron-icon class="disabled" icon="vaadin:refresh"></iron-icon>
           </div>

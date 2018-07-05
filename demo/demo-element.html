@@ -3,7 +3,6 @@
 <link rel="import" href="../genesis-popover.html">
 <link rel="import" href="../../vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
-<link rel="import" href="../../vaadin-lumo-styles/vaadin-lumo-styles.html">
 
 <dom-module id="demo-element">
   <template>
@@ -23,17 +22,26 @@
     <h2>Genesis-Popover Example</h2>
 
       This first example consists in a button toggling a simple popover when clicked
-       <genesis-popover>
-         <input type="button" value="Pop with popper"/>
-         <div slot="content">Here is the content of my popover, it is passed to the genesis-popover webcomponent using the slot 'content'</div>
+       <genesis-popover placement="top">
+         <input type="button" value="Pop with popper" />
+         <div slot="content">Adrienne is Rocky's soul mate</div>
        </genesis-popover>
 
 	<hr/>
 
       Another popover with default content
-      <genesis-popover>
+      <genesis-popover placement="right">
          <input type="button" value="Pop another one"/>
+         <div slot="content">Leo is the king of the jungle</div>
        </genesis-popover>
+
+       <hr/>
+
+            Placement on the left
+            <genesis-popover placement="left" pressed >
+               <input type="button" value="Pop another one"/>
+               <div slot="content">Indeed he is</div>
+             </genesis-popover>
 
 	<hr/>
       Another popover with a vaadin grid as html content
