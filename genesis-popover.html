@@ -16,16 +16,6 @@
         --genesis-popover-z-index:10000;
       }
 
-      /*:host #popoverContent {
-        display: none;
-      }
-
-      :host #popoverContent {
-        display: flex;
-      }*/
-
-
-
       .popper {
         background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
         border-radius: var(--lumo-border-radius);
@@ -132,28 +122,12 @@
       }
 
     _pressedChanged(newValue, oldValue) {
-      console.log(oldValue, newValue);
         if(newValue && this.popperInstance!=null) {
           this.showPopper();
         } else {
           this.popperClass="popper popper-hidden";
         }
       }
-    //   connectedCallback() {
-    //   super.connectedCallback();
-
-
-    // }
-
-
-
-    // attributeChangedCallback(name, oldValue, newValue) {
-    //   super.attributeChangedCallback(name, oldValue, newValue);
-    //     if(name==='pressed' && this.popperInstance!=null && this.pressed)
-    //     {
-    //       // this.showPopper();
-    //     }
-    //   }
 
       togglePopper() {
         this.pressed = !this.pressed;
