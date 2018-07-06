@@ -30,12 +30,12 @@
 	<hr/>
 
       Another popover with default content
-      <genesis-popover placement="right" id="toto">
+      <genesis-popover placement="right" id="danyskays">
          <input type="button" value="Pop another one"/>
          <div slot="content">Leo is the king of the jungle</div>
        </genesis-popover>
-       <br/>
-<input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" on-click="update">
+       <br/><br/>
+      <input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" on-click="update">
 
 
        <hr/>
@@ -97,7 +97,7 @@
     class DemoElement extends Polymer.Element {
       static get is() { return 'demo-element' }
       update(){
-        this.$.toto.setAttribute('pressed','true');
+        this.$.danyskays.setAttribute('pressed','true');
       }
     }
     customElements.define(DemoElement.is, DemoElement);
