@@ -33,7 +33,7 @@
           assert.equal(element.popperClass, 'popper popper-hidden');
           const elementShadowRoot = element.shadowRoot;
           const elementContent = elementShadowRoot.querySelector('#popoverContent>slot');
-          assert.equal(elementContent.innerHTML, 'Default popover content');
+          assert.equal(elementContent.innerHTML, '');
         });
 
         // test('setting a property on the element works', () => {
