@@ -67,7 +67,7 @@
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]" on-click="togglePopper">
+      <div id="popoverContent" class$="[[popperClass]]" >
         <slot name="content"></slot>
       </div>
 
@@ -138,6 +138,24 @@
         }
       }
 
+
+      containsAsChild(element){
+        if(element===this) return true;
+        let slottedNodes = this.shadowRoot.querySelector('slot[name="content"]').assignedNodes();
+        
+        for (let node of slottedNodes)
+        {
+          if(element===node) return true;
+
+          for(let child of Array.from(node.querySelectorAll("*")))
+          {
+            if(element===child) return true;  
+          }
+        }
+      
+        return false;
+      }
+
       showPopper(){
         this.popperInstance.scheduleUpdate();
         this.popperClass="popper popper-visible";
@@ -146,13 +164,8 @@
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
-              var emitterRect=that.$.popoverEmitter.getBoundingClientRect();
-              if(event.clientX<emitterRect.left
-                 || event.clientX>emitterRect.right
-                 || event.clientY<emitterRect.top
-                 || event.clientY>emitterRect.bottom)
-                 {
-                   that.togglePopper();
+                 if(!that.containsAsChild(event.target)){
+                  that.togglePopper();
                  }
               }
 

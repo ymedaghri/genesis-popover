@@ -1,16 +1,133 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script>
-      /*
-      window.Polymer = window.Polymer || {};
-      window.Polymer.dom = 'shadow';
-      */
-    </script>
-    <link rel="import" href="demo-element.html">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>genesis-popover demo</title>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../genesis-popover.html">
+    <link rel="import" href="../../vaadin-grid/vaadin-grid.html">
+    <link rel="import" href="../../iron-ajax/iron-ajax.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+    <script type="text/javascript">
+      function update(){
+        document.getElementById('danyskays').setAttribute('pressed','true');
+      }
+      function toggleMeOff(){
+        document.getElementById('kylie').togglePopper();
+      }
+      </script>
+
+<style>
+    .wider {
+      --genesis-popover-max-width:500px;
+    }
+    vaadin-grid {
+      width: 500px;
+    }
+  </style>
+
   </head>
   <body>
-    <demo-element></demo-element>
+      <div class="vertical-section-container centered">
+          <h3>Genesis-Popover Example</h3>
+          <demo-snippet>
+            <p>This first example consists in a button toggling a simple popover when clicked</p>
+            <template>
+              <genesis-popover placement="top">
+                <input type="button" value="Pop with popper" />
+                <div slot="content">Adrienne is Rocky's soul mate</div>
+              </genesis-popover>
+            </template>
+          </demo-snippet>
+
+          <h3>Another popover opened by a button ouside of the popover</h3>
+          <demo-snippet>
+            <template>
+              <genesis-popover placement="right" id="danyskays">
+                <input type="button" value="Pop...."/>
+                <div slot="content">Leo is the king of the jungle</div>
+              </genesis-popover>
+              <br/><br/>
+              <div>
+                <input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" onclick="update()">
+              </div>
+            </template>
+          </demo-snippet>
+          
+          <h3>Another popover toggled off from the inside</h3>
+          <demo-snippet>
+            <template>
+              <genesis-popover placement="right" id="kylie">
+                  <input type="button" value="Pop...."/>
+                  <div slot="content">Leo is the king of the jungle
+                    <input type="button" value="ToggleMeOff" onclick="toggleMeOff()">
+                  </div>
+                </genesis-popover>
+            </template>
+          </demo-snippet>
+          
+          <h3>Another popover with a vaadin grid as html content</h3>
+          <demo-snippet>
+            <template>
+                <genesis-popover class="wider">
+                    <input type="button" value="Champaaaaagne...."/>
+                    <div slot="content">
+                      <dom-bind>
+                       <template>
+                         <!-- Fetch an array of users to be shown in the grid -->
+                         <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
+           
+                         <!-- The array is set as the <vaadin-grid>'s "items" property -->
+                         <vaadin-grid aria-label="Basic Binding Example" items="[[users.result]]">
+           
+                           <vaadin-grid-column width="60px" flex-grow="0">
+                             <template class="header">#</template>
+                             <template>[[index]]</template>
+                             <!-- If necessary, the footer could be set using <template class="footer"> -->
+                             <template class="footer">#</template>
+                           </vaadin-grid-column>
+           
+                           <vaadin-grid-column>
+                             <template class="header">First Name</template>
+                             <template>[[item.firstName]]</template>
+                             <template class="footer">First Name</template>
+                           </vaadin-grid-column>
+           
+                           <vaadin-grid-column>
+                             <template class="header">Last Name</template>
+                             <template>[[item.lastName]]</template>
+                             <template class="footer">Last Name</template>
+                           </vaadin-grid-column>
+           
+                           <vaadin-grid-column width="8em">
+                             <template class="header">Address</template>
+                             <template>
+                               <div style="white-space: normal">[[item.address.street]], [[item.address.city]]</div>
+                             </template>
+                             <template class="footer">Address</template>
+                           </vaadin-grid-column>
+           
+                         </vaadin-grid>
+                       </template>
+                     </dom-bind>
+                   </div>
+                  </genesis-popover>
+            </template>
+          </demo-snippet>
+
+            
+          
+
+        </div>
   </body>
 </html>
