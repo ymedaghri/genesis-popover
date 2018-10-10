@@ -105,6 +105,13 @@
 
       ready(){
         super.ready();
+
+        this.$.popoverContent.addEventListener('click', event => {
+            if(this.containsAsChild(event.target)){
+              this.togglePopper();
+            }
+          });
+
         this.popperInstance = new Popper(
                 this.$.popoverEmitter,
                 this.$.popoverContent,
@@ -140,7 +147,8 @@
 
 
       containsAsChild(element){
-        if(element===this) return true;
+
+        if(element===this.$.popoverContent) return true;
         let slottedNodes = this.shadowRoot.querySelector('slot[name="content"]').assignedNodes();
         
         for (let node of slottedNodes)
@@ -164,10 +172,8 @@
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
-                 if(!that.containsAsChild(event.target)){
-                  that.togglePopper();
-                 }
-              }
+              that.togglePopper();
+          }
 
           document.addEventListener('keydown', windowKeyDown, true);
           function windowKeyDown(event) {
