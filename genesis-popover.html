@@ -132,6 +132,10 @@
 
       togglePopper() {
         this.pressed = !this.pressed;
+        if(!this.pressed) {
+          document.removeEventListener("click", this.windowClickHandler, true);
+          document.removeEventListener("keydown", this.windowKeyDownHandler, true);
+        }
       }
 
       showPopper(){
@@ -143,8 +147,6 @@
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
               var emitterRect=that.$.popoverEmitter.getBoundingClientRect();
-              document.removeEventListener("click", windowClick, true);
-              document.removeEventListener("keydown", windowKeyDown, true);
               if(event.clientX<emitterRect.left
                  || event.clientX>emitterRect.right
                  || event.clientY<emitterRect.top
@@ -157,11 +159,12 @@
           document.addEventListener('keydown', windowKeyDown, true);
           function windowKeyDown(event) {
               if(event.key==='Escape') {
-                document.removeEventListener("keydown", windowKeyDown, true);
-                document.removeEventListener("click", windowClick, true);
                 that.togglePopper();
               }
           }
+
+          this.windowClickHandler=windowClick;
+          this.windowKeyDownHandler=windowKeyDown;
       }
 
     }

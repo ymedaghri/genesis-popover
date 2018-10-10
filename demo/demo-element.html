@@ -29,13 +29,26 @@
 
 	<hr/>
 
-      Another popover with default content
+    Another popover with default content
       <genesis-popover placement="right" id="danyskays">
          <input type="button" value="Pop another one"/>
          <div slot="content">Leo is the king of the jungle</div>
        </genesis-popover>
        <br/><br/>
       <input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" on-click="update">
+
+
+       <hr/>
+
+      Another popover toggled from the inside
+      <genesis-popover placement="right" id="danyskays">
+         <input type="button" value="Pop another one"/>
+         <div slot="content">Leo is the king of the jungle
+          <input type="button" value="ToggleMeOff" on-click="toggleMeOff">
+         </div>
+         
+       </genesis-popover>
+       <br/><br/>
 
 
        <hr/>
@@ -98,6 +111,9 @@
       static get is() { return 'demo-element' }
       update(){
         this.$.danyskays.setAttribute('pressed','true');
+      }
+      toggleMeOff(){
+        this.$.danyskays.togglePopper();
       }
     }
     customElements.define(DemoElement.is, DemoElement);
