@@ -2,6 +2,7 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="popperjs-import.html">
 
+
 <dom-module id="genesis-popover">
 
   <template>
@@ -12,7 +13,7 @@
       :host {
         --genesis-popover-max-width:300px;
         --genesis-popover-min-height:10px;
-        --genesis-popover-margin:15px;
+        --genesis-popover-margin:0px;
         --genesis-popover-z-index:10000;
       }
 
@@ -60,10 +61,16 @@
         display: none;
       }
 
+
+      .flexComponent {
+        display: flex;
+        flex: 1;
+      }
+
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="togglePopper">
+       <span id="popoverEmitter" on-click="togglePopper" class="flexComponent">
          <slot></slot>
        </span>
 
@@ -107,16 +114,17 @@
         super.ready();
 
         this.$.popoverContent.addEventListener('click', event => {
-            if(this.containsAsChild(event.target)){
-              this.togglePopper();
-            }
-          });
+          if(this.containsAsChild(event.target)){
+            this.togglePopper();
+          }
+        });
 
         this.popperInstance = new Popper(
                 this.$.popoverEmitter,
                 this.$.popoverContent,
                 {
                   placement: this.placement,
+                  positionFixed:true,
                   modifiers: {
                     preventOverflow: {
                       boundariesElement: 'viewport',
@@ -124,27 +132,48 @@
                   },
                 }
             );
-        if(this.pressed) {
-          this.showPopper();
-        }
+
+            this.popperInstance.scheduleUpdate();
+            this.setUpDone=true;
+            this._pressedChanged(this.pressed);
       }
 
-    _pressedChanged(newValue, oldValue) {
-        if(newValue && this.popperInstance!=null) {
-          this.showPopper();
+    _pressedChanged(newValue) {
+      if(this.setUpDone)
+      {
+        if(newValue) {
+          
+          this.popperInstance.scheduleUpdate();
+          this.popperClass="popper popper-visible";
+          var that=this;
+
+          document.addEventListener("click", windowClick, true);
+          function windowClick(event) {
+              that.togglePopper();
+          }
+
+          document.addEventListener('keydown', windowKeyDown, true);
+          function windowKeyDown(event) {
+              if(event.key==='Escape') {
+                that.togglePopper();
+              }
+          }
+
+          this.windowClickHandler=windowClick;
+          this.windowKeyDownHandler=windowKeyDown;
+
         } else {
           this.popperClass="popper popper-hidden";
+          if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
+          if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
         }
+      }
+        
       }
 
       togglePopper() {
         this.pressed = !this.pressed;
-        if(!this.pressed) {
-          document.removeEventListener("click", this.windowClickHandler, true);
-          document.removeEventListener("keydown", this.windowKeyDownHandler, true);
-        }
       }
-
 
       containsAsChild(element){
 
@@ -162,28 +191,6 @@
         }
       
         return false;
-      }
-
-      showPopper(){
-        this.popperInstance.scheduleUpdate();
-        this.popperClass="popper popper-visible";
-
-          var that=this;
-
-          document.addEventListener("click", windowClick, true);
-          function windowClick(event) {
-              that.togglePopper();
-          }
-
-          document.addEventListener('keydown', windowKeyDown, true);
-          function windowKeyDown(event) {
-              if(event.key==='Escape') {
-                that.togglePopper();
-              }
-          }
-
-          this.windowClickHandler=windowClick;
-          this.windowKeyDownHandler=windowKeyDown;
       }
 
     }

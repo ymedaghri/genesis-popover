@@ -1,19 +1,19 @@
 {
   "name": "genesis-popover",
-  "description": "brief description",
+  "description": "Popover webcomponent for genesis",
   "homepage": "https://github.com/ymedaghri/genesis-popover.git",
   "main": "genesis-popover.html",
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "demo",
+    "demo-lumo",
+    "test"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.4"
   },
   "devDependencies": {
     "iron-icon": "PolymerElements/iron-icon#^2.0.0",

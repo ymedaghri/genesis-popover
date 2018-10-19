@@ -15,15 +15,11 @@
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <genesis-popover></genesis-popover>
+        <genesis-popover>
+          <div slot="content">Default popover content</div>
+        </genesis-popover>
       </template>
     </test-fixture>
-
-    <!-- <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <yooyoo-popover prop1="new-prop1"></yooyoo-popover>
-      </template>
-    </test-fixture> -->
 
     <script>
       suite('genesis-popover', () => {
@@ -35,15 +31,6 @@
           const elementContent = elementShadowRoot.querySelector('#popoverContent>slot');
           assert.equal(elementContent.innerHTML, '');
         });
-
-        // test('setting a property on the element works', () => {
-        //   // Create a test fixture
-        //   const element = fixture('ChangedPropertyTestFixture');
-        //   assert.equal(element.prop1, 'new-prop1');
-        //   const elementShadowRoot = element.shadowRoot;
-        //   const elementHeader = elementShadowRoot.querySelector('h2');
-        //   assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        // });
 
       });
     </script>
