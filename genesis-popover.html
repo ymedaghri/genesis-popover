@@ -2,7 +2,6 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="popperjs-import.html">
 
-
 <dom-module id="genesis-popover">
 
   <template>
@@ -13,7 +12,7 @@
       :host {
         --genesis-popover-max-width:300px;
         --genesis-popover-min-height:10px;
-        --genesis-popover-margin:0px;
+        --genesis-popover-margin:10px;
         --genesis-popover-z-index:10000;
       }
 
@@ -62,29 +61,127 @@
       }
 
 
-      .flexComponent {
-        display: flex;
-        flex: 1;
+      .flex-component-mixin {
+        @apply --flex-display-mixin;
       }
 
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="togglePopper" class="flexComponent">
-         <slot></slot>
-       </span>
+    <span id="popoverEmitter" on-click="togglePopper" class="flex-component-mixin">
+      <slot></slot>
+    </span>
 
-      <div id="popoverContent" class$="[[popperClass]]" >
-        <slot name="content"></slot>
-      </div>
+    <div id="popoverContent" class$="[[popperClass]]" >
+      <slot name="content"></slot>
+    </div>
 
   </template>
 
   <script>
     class GenesisPopover extends Polymer.Element {
+
       static get is() {
         return 'genesis-popover';
       }
+
+      constructor() {
+        super();
+      }
+
+      ready(){
+        super.ready();
+
+        this.popperInstance = new Popper(
+                this.$.popoverEmitter,
+                this.$.popoverContent,
+                {
+                  placement: this.placement,
+                  positionFixed:true,
+                  modifiers: {
+                    preventOverflow: {
+                      boundariesElement: 'viewport',
+                    },
+                  },
+                }
+            );
+      }
+
+    _pressedChanged(newValue, oldValue) {
+        if(newValue) {
+          this.__scheduleUpdatePopperPosition();
+          this.__makePopperVisible();
+          this.__registerWindowHandlers();
+          this.__dispatchPopperOpenedEvent();
+        } else {
+          this.__makePopperHidden();
+          this.__unregisterWindowHandlers();
+          if(oldValue) {
+            this.__dispatchPopperClosedEvent();
+          }
+        }
+      }
+
+      togglePopper(event) {
+        if(!event || !event.target.getAttribute('popover-ignore')){
+          this.pressed = !this.pressed;
+        }
+      }
+
+       __scheduleUpdatePopperPosition(){
+          if(this.popperInstance) {
+            this.popperInstance.scheduleUpdate();
+          }
+        }
+
+      __makePopperVisible(){
+        this.popperClass="popper popper-visible";
+      }
+
+      __makePopperHidden(){
+        this.popperClass="popper popper-hidden";
+      }
+
+      __dispatchPopperOpenedEvent(){
+        this.dispatchEvent(new CustomEvent('popper-opened', { opened: true }));
+        }
+
+      __dispatchPopperClosedEvent(){
+        this.dispatchEvent(new CustomEvent('popper-closed', { closed: true }));
+      }
+
+      __registerWindowHandlers(){
+        var that=this;
+
+        if(!this.ignore_auto_close)
+        {
+          document.addEventListener("click", windowClick, true);
+          var that=this;
+          function windowClick(event) {
+            if(that!==event.target.closest("genesis-popover"))
+            {
+              that.togglePopper();
+            }
+          }
+
+          this.windowClickHandler=windowClick;
+        }
+
+        document.addEventListener('keydown', windowKeyDown, true);
+        function windowKeyDown(event) {
+           if(event.key==='Escape') {
+            that.togglePopper();
+          }
+        }
+
+          this.windowKeyDownHandler=windowKeyDown;
+      }
+
+      __unregisterWindowHandlers(){
+        if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
+        if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
+      }
+
       static get properties() {
         return {
           pressed: {
@@ -102,99 +199,15 @@
           popperClass: {
             type: String,
             value: 'popper popper-hidden'
+          },
+          ignore_auto_close: {
+            type: Boolean,
+            value: false
           }
         }
       }
-
-      constructor() {
-        super();
-      }
-
-      ready(){
-        super.ready();
-
-        this.$.popoverContent.addEventListener('click', event => {
-          if(this.containsAsChild(event.target)){
-            this.togglePopper();
-          }
-        });
-
-        this.popperInstance = new Popper(
-                this.$.popoverEmitter,
-                this.$.popoverContent,
-                {
-                  placement: this.placement,
-                  positionFixed:true,
-                  modifiers: {
-                    preventOverflow: {
-                      boundariesElement: 'viewport',
-                    },
-                  },
-                }
-            );
-
-            this.popperInstance.scheduleUpdate();
-            this.setUpDone=true;
-            this._pressedChanged(this.pressed);
-      }
-
-    _pressedChanged(newValue) {
-      if(this.setUpDone)
-      {
-        if(newValue) {
-          
-          this.popperInstance.scheduleUpdate();
-          this.popperClass="popper popper-visible";
-          var that=this;
-
-          document.addEventListener("click", windowClick, true);
-          function windowClick(event) {
-              that.togglePopper();
-          }
-
-          document.addEventListener('keydown', windowKeyDown, true);
-          function windowKeyDown(event) {
-              if(event.key==='Escape') {
-                that.togglePopper();
-              }
-          }
-
-          this.windowClickHandler=windowClick;
-          this.windowKeyDownHandler=windowKeyDown;
-
-        } else {
-          this.popperClass="popper popper-hidden";
-          if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
-          if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
-        }
-      }
-        
-      }
-
-      togglePopper() {
-        this.pressed = !this.pressed;
-      }
-
-      containsAsChild(element){
-
-        if(element===this.$.popoverContent) return true;
-        let slottedNodes = this.shadowRoot.querySelector('slot[name="content"]').assignedNodes();
-        
-        for (let node of slottedNodes)
-        {
-          if(element===node) return true;
-
-          for(let child of Array.from(node.querySelectorAll("*")))
-          {
-            if(element===child) return true;  
-          }
-        }
-      
-        return false;
-      }
-
     }
-    customElements.define(GenesisPopover.is, GenesisPopover);
+    window.customElements.define(GenesisPopover.is, GenesisPopover);
   </script>
 
 </dom-module>

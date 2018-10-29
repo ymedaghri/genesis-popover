@@ -14,19 +14,25 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "popper.js": "^1.14.4"
+  
   },
   "devDependencies": {
-    "iron-icon": "PolymerElements/iron-icon#^2.0.0",
-    "iron-icons": "PolymerElements/iron-icons#^2.0.0",
-    "vaadin-grid": "vaadin/vaadin-grid#^5.0.4",
-    "iron-ajax": "^2.1.3",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
-    "vaadin-lumo-styles": "^1.0.0",
-    "vaadin-icons": "^4.1.4"
+    "iron-icon": "PolymerElements/iron-icon#^2.0.0",
+    "iron-icons": "PolymerElements/iron-icons#^2.0.0",
+    "iron-ajax": "^2.1.3",
+    "vaadin-text-field": "vaadin/vaadin-text-field#2.1.2",
+    "vaadin-button": "vaadin/vaadin-button#2.1.0",
+    "vaadin-icons": "vaadin/vaadin-icons#4.2.0",
+    "vaadin-dialog": "vaadin/vaadin-dialog#~2.2.0",
+    "vaadin-grid": "vaadin/vaadin-grid#~5.2.1"
   },
   "resolutions": {
     "polymer": "^2.0.0"
   }
 }
+
+     
+

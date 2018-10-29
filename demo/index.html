@@ -13,6 +13,10 @@
     <link rel="import" href="../genesis-popover.html">
     <link rel="import" href="../../vaadin-grid/vaadin-grid.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
+    <link rel="import" href="../../vaadin-dialog/vaadin-dialog.html">
+    <link rel="import" href="../../vaadin-button/vaadin-button.html">
+    <link rel="import" href="../../vaadin-text-field/vaadin-text-field.html">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -49,17 +53,48 @@
               </genesis-popover>
             </template>
           </demo-snippet>
-        
+
           <h3>Genesis-Popover Example already displayed</h3>
           <demo-snippet>
             <p>This popper has pressed attribute so it is displayed by default</p>
+            <br>
             <template>
-              <genesis-popover placement="top" pressed>
-                <div slot="content">Adrienne is Rocky's soul mate</div>
-              </genesis-popover>
+                <genesis-popover placement="right" pressed >
+                  <i class="em em-boxing_glove"></i>
+                  <div slot="content">Adrian is Rocky's soul mate</div>
+                </genesis-popover>
             </template>
           </demo-snippet>
 
+           <h3>Genesis-Popover Example already displayed with ignore_auto_close</h3>
+          <demo-snippet>
+            <p>This popper has pressed attribute so it is displayed by default</p>
+            <br>
+            <template>
+                <genesis-popover placement="right" pressed ignore_auto_close>
+                  <i class="em em-boxing_glove"></i>
+                  <div slot="content">Adrian is Rocky's soul mate</div>
+                </genesis-popover>
+            </template>
+          </demo-snippet>
+
+          <h3>Genesis-Popover inside a vaadin dialog</h3>
+          <demo-snippet>
+              <p>This popper is displayed into a vaadin-dialog</p>
+              <vaadin-button onclick="document.getElementById('myDialog').setAttribute('opened',false); document.getElementById('myDialog').setAttribute('opened',true);">Open a Dialog</vaadin-button>
+              <vaadin-dialog id="myDialog">
+                  <template>
+                    <div>
+                        <genesis-popover placement="bottom-start">
+                            <vaadin-button>Click on me</vaadin-button>
+                            <div slot="content">Adrian is Rocky's soul mate</div>
+                          </genesis-popover>
+                    </div>
+
+                    <div>Address : <vaadin-text-field></vaadin-text-field></div>
+                  </template>
+              </vaadin-dialog>
+          </demo-snippet>
 
           <h3>Another popover opened by a button ouside of the popover</h3>
           <demo-snippet>
@@ -74,7 +109,7 @@
               </div>
             </template>
           </demo-snippet>
-          
+
           <h3>Another popover toggled off from the inside</h3>
           <demo-snippet>
             <template>
@@ -86,7 +121,7 @@
                 </genesis-popover>
             </template>
           </demo-snippet>
-          
+
           <h3>Another popover with a vaadin grid as html content</h3>
           <demo-snippet>
             <template>
@@ -97,29 +132,29 @@
                        <template>
                          <!-- Fetch an array of users to be shown in the grid -->
                          <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
-           
+
                          <!-- The array is set as the <vaadin-grid>'s "items" property -->
                          <vaadin-grid aria-label="Basic Binding Example" items="[[users.result]]">
-           
+
                            <vaadin-grid-column width="60px" flex-grow="0">
                              <template class="header">#</template>
                              <template>[[index]]</template>
                              <!-- If necessary, the footer could be set using <template class="footer"> -->
                              <template class="footer">#</template>
                            </vaadin-grid-column>
-           
+
                            <vaadin-grid-column>
                              <template class="header">First Name</template>
                              <template>[[item.firstName]]</template>
                              <template class="footer">First Name</template>
                            </vaadin-grid-column>
-           
+
                            <vaadin-grid-column>
                              <template class="header">Last Name</template>
                              <template>[[item.lastName]]</template>
                              <template class="footer">Last Name</template>
                            </vaadin-grid-column>
-           
+
                            <vaadin-grid-column width="8em">
                              <template class="header">Address</template>
                              <template>
@@ -127,7 +162,7 @@
                              </template>
                              <template class="footer">Address</template>
                            </vaadin-grid-column>
-           
+
                          </vaadin-grid>
                        </template>
                      </dom-bind>
@@ -136,8 +171,8 @@
             </template>
           </demo-snippet>
 
-            
-          
+
+
 
         </div>
   </body>
